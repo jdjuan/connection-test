@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  # database:
+  #   container_name: ${DATABASE_CONTAINER_NAME}
+  #   image: ${DATABASE_DOCKER_IMAGE}
+  #   user: root
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     ACCEPT_EULA: ${DATABASE_ACCEPT_EULA}
+  #     MSSQL_SA_PASSWORD: ${DATABASE_SA_PASSWORD}
+  #     MSSQL_PID: ${DATABASE_MSSQL_PID}
+  #   ports:
+  #     - ${DATABASE_PORT}:${DATABASE_PORT}
+  #   networks:
+  #     - rlb-network
+  #   volumes:
+  #     - sqldata:/var/opt/mssql
+
+  server:
+    container_name: connection-test
+    image: connection-test
+    build: .
+      # dockerfile: docker/server.dockerfile
+      # args:
+      #   BASE_IMAGE_NAME: ${DOCKER_BASE_IMAGE_NAME}:0.0.0
+    env_file:
+      - .env
+    # ports:
+    #   - ${SERVER_PORT}:${SERVER_PORT}
+    # environment:
+    # WAIT_HOSTS: ${DATABASE_HOST}:${DATABASE_PORT}
+    # WAIT_TIMEOUT: 300
+    # networks:
+    #   - rlb-network
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+  # client:
+  #   container_name: ${CLIENT_CONTAINER_NAME}
+  #   image: ${CLIENT_CONTAINER_NAME}:${npm_package_version}
+  #   build:
+  #     dockerfile: docker/client.dockerfile
+  #     args:
+  #       BASE_IMAGE_NAME: ${DOCKER_BASE_IMAGE_NAME}:${npm_package_version}
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - ${CLIENT_PORT}:${CLIENT_PORT}
+  #   networks:
+  #     - rlb-network
+
+  # networks:
+  #   rlb-network:
+  #     driver: bridge
+  # volumes:
+  #   sqldata:
